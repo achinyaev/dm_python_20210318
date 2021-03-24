@@ -2,7 +2,7 @@ import requests
 import bs4
 import pymongo
 import time
-from pathlib import Path
+#from pathlib import Path
 from urllib.parse import urljoin
 
 class MagnitParse:
