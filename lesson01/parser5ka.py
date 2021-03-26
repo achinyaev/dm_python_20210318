@@ -8,6 +8,8 @@ class Parser5ka:
     def __init__(self, start_url: str, save_path: Path, *args, **kwargs ):
         self.start_url = start_url
         self.save_path = save_path
+        if not self.save_path.exists():
+            self.save_path.mkdir()
 
     def _get_response(self, url):
         while True:
@@ -30,9 +32,7 @@ class Parser5ka:
                 yield product
 
     def _save(self, data: dict, file_path: Path):
-
         file_path.write_text(json.dumps(data, ensure_ascii=False), encoding='utf8')
-
 
 class CategoriesParser(Parser5ka):
     def __init__(self, categories_url, *args, **kwargs):
@@ -55,18 +55,13 @@ class CategoriesParser(Parser5ka):
             self._save(category, cat_path)
 
 
-def get_save_path(dir_name):
+def gen_save_path(dir_name):
     save_path = Path(__file__).parent.joinpath(dir_name)
-    if not save_path.exists():
-        save_path.mkdir()
     return save_path
-
-
-
 
 if __name__ == "__main__":
     url = "https://5ka.ru/api/v2/special_offers/"
     cat_url = "https://5ka.ru/api/v2/categories/"
-    save_path_categories = get_save_path("categories")
+    save_path_categories = gen_save_path("categories")
     cat_parser = CategoriesParser(cat_url, url, save_path_categories)
     cat_parser.run()
