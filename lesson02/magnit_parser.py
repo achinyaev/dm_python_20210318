@@ -39,10 +39,6 @@ class MagnitParse:
             "promo_name": lambda a: a.find("div", attrs={"class":"card-sale__header"}).text,
             "old_price" : lambda a: float(a.find("div", attrs={"class":"label__price label__price_old"}).text.split()[0]+'.'+ a.find("div", attrs={"class":"label__price label__price_old"}).text.split()[1]) ,
             "new_price": lambda a: float(a.find("div", attrs={"class":"label__price label__price_new"}).text.split()[0]+'.'+ a.find("div", attrs={"class":"label__price label__price_new"}).text.split()[1]),
-            #"old_price": float,
-            #"new_price": float,
-
-
         }
         return data_template
 
@@ -57,7 +53,7 @@ class MagnitParse:
             for key, func in self.template.items():
                 try:
                     product_data[key] = func(prod_tag)
-                    print(product_data[key])
+                    #print(product_data[key])
                 except (AttributeError,IndexError):
                     pass
             yield product_data
