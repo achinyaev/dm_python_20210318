@@ -64,7 +64,7 @@ class MagnitParse:
 
 
     def save(self, data):
-        collection = self.db["magnit_01"]
+        collection = self.db["magnit"]
         collection.insert_one(data)
 
 if __name__  == '__main__':
