@@ -58,7 +58,7 @@ class MagnitParse:
                 try:
                     product_data[key] = func(prod_tag)
                     print(product_data[key])
-                except AttributeError:
+                except (AttributeError,IndexError):
                     pass
             yield product_data
 
