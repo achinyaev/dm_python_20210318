@@ -1,6 +1,7 @@
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, ForeignKey, Table, DateTime, Boolean
+import datetime as dt
 
 Base = declarative_base()
 
@@ -28,6 +29,7 @@ class Post(Base, IdMixin, UrlMixin):
     author_id = Column(Integer, ForeignKey("author.id"))
     author = relationship("Author")
     tags = relationship("Tag", secondary=tag_post)
+    comments = relationship("Comment")
 
 
 class Author(Base, IdMixin, UrlMixin):

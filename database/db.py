@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from . import models
+from database import models
 
 class Database:
     def __init__(self, db_url):
@@ -51,6 +51,7 @@ class Database:
 
     def create_post(self, data):
         session = self.maker()
+        comments = self._get_or_create_comments(session, data["comments_data"])
         author = self._get_or_create(
             session,
             models.Author,
@@ -67,12 +68,11 @@ class Database:
         post = self._get_or_create(
             session,
             models.Post,
-            models.Post.gb_id,
-            data["post_data"]["gb_id"],
+            models.Post.id,
+            data["post_data"]["id"],
             **data["post_data"],
             author=author,
         )
-        comments = self._get_or_create_comments(session, data["comments_data"])
         post.tags.extend(tags)
         post.comments.extend(comments)
         session.add(post)
