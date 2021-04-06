@@ -1,8 +1,8 @@
 import typing
 import requests
 import bs4
-from urllib.parse import urljoin
-from db import Database
+#from urllib.parse import urljoin
+from database.db import Database
 
 
 class GbBlogParse:
@@ -33,10 +33,46 @@ class GbBlogParse:
         return soup
 
     def parse_post(self, url, soup):
-        pass
+        author_tag = soup.find("div", attrs={"itemprop": "author"})
+        data = {
+            "post_data": {
+                "title": soup.find("h1", attrs={"class": "blogpost-title"}).text,
+                "url": url,
+                "id": soup.find("comments").attrs.get("commentable-id"),
+            },
+            "author_data": {
+                "url": urljoin(url, author_tag.parent.attrs.get("href")),
+                "name": author_tag.text,
+            },
+            "tags_data": [
+                {"name": tag.text, "url": urljoin(url, tag.attrs.get("href"))}
+                for tag in soup.find_all("a", attrs={"class": "small"})
+            ],
+            "comments_data": self._get_comments(soup.find("comments").attrs.get("commentable-id")),
+        }
+        return data
 
     def parse_feed(self, url, soup):
-        pass
+        ul = soup.find("ul", attrs={"class": "gb__pagination"})
+        pag_urls = set(
+            urljoin(url, href.attrs.get("href"))
+            for href in ul.find_all("a")
+            if href.attrs.get("href")
+        )
+        for pag_url in pag_urls:
+            if pag_url not in self.done_urls:
+                self.tasks.append(self.get_task(pag_url, self.parse_feed))
+
+        post_items = soup.find("div", attrs={"class": "post-items-wrapper"})
+        posts_urls = set(
+            urljoin(url, href.attrs.get("href"))
+            for href in post_items.find_all("a", attrs={"class": "post-item__title"})
+            if href.attrs.get("href")
+        )
+
+        for post_url in posts_urls:
+            if post_url not in self.done_urls:
+                self.tasks.append(self.get_task(post_url, self.parse_post))
 
     def save(self, data):
         self.db.create_post(data)
