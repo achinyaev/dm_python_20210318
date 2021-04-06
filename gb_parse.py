@@ -20,13 +20,12 @@ class GbBlogParse:
             return callback(url, soup)
         return task
 
-    def _get_response(self, url, *args, **kwargs) -> requests.Response:
+    def _get_response(self, url) -> requests.Response:
         # обработать статус коды и ошибки
-        for _ in range(10):
-            response = requests.get(url, *args, **kwargs)
-            if response.status_code == 200:
-                return response
-        raise ValueError("Error URL")
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response
+        raise ValueError("Error URL =" + url)
 
     def _get_soup(self, url, *args, **kwargs):
         soup = bs4.BeautifulSoup(self._get_response(url).text, "lxml")
