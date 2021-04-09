@@ -1,6 +1,7 @@
 import scrapy
 import pymongo
 import re
+import datetime
 
 
 class AutoyoulaSpider(scrapy.Spider):
@@ -60,21 +61,19 @@ class AutoyoulaSpider(scrapy.Spider):
                 "photo_url": response.css("img.PhotoGallery_photoImage__2mHGn::attr(src)").extract(),
                 "specification": [],
                 "description": response.css("div.AdvertCard_descriptionInner__KnuRi::text").extract_first(),
-                "phone":response.css("div.PopupPhoneNumber_block__nF2xR span.PopupPhoneNumber_number__1hybY::text").extract_first(),
+                "phone": response.css("div.PopupPhoneNumber_block__nF2xR span.PopupPhoneNumber_number__1hybY::text").extract_first(),
                 "url": response.url
             }
+            for items in response.css("div.AdvertSpecs_row__ljPcX"):
+                div_data = items.css("div.AdvertSpecs_data__xK2Qx::text").extract_first()
+                data["specification"].append({
+                    "name": items.css("div.AdvertSpecs_label__2JHnS::text").extract_first(),
+                    "value": div_data if div_data else items.css("div.AdvertSpecs_data__xK2Qx a::text").extract_first()
+                })
+            self.dbclient[self.name+datetime.datetime].insert_one(data)
 
-        for items in response.css("div.AdvertSpecs_row__ljPcX"):
-            div_data = items.css("div.AdvertSpecs_data__xK2Qx::text").extract_first()
-            data["specs"].append(
-                {"name": items.css("div.AdvertSpecs_label__2JHnS::text").extract_first(),
-                 "value": div_data if div_data else items.css("div.AdvertSpecs_data__xK2Qx a::text").extract_first()
-                 }
-            )
-
-        self.db[self.name].insert_one(data)
-        except (AttributeError,ValueError):
-        pass
+        except (AttributeError, ValueError):
+            pass
 
 
 
