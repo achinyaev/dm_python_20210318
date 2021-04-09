@@ -70,8 +70,8 @@ class AutoyoulaSpider(scrapy.Spider):
                     "name": items.css("div.AdvertSpecs_label__2JHnS::text").extract_first(),
                     "value": div_data if div_data else items.css("div.AdvertSpecs_data__xK2Qx a::text").extract_first()
                 })
-            print(self.name+str(datetime.now()))
-            self.dbclient[self.name][datetime.datetime.today().strftime("%Y-%m-%d_%H:%M")].insert_one(data)
+            print(datetime.datetime.today().strftime("%Y-%m-%d_%H:%M"))
+            self.dbclient["parse20210323"][self.name].insert_one(data)
 
         except (AttributeError, ValueError):
             pass
