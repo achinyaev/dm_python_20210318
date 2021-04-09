@@ -73,7 +73,7 @@ class AutoyoulaSpider(scrapy.Spider):
             )
 
         self.db[self.name].insert_one(data)
-        except(AttributeError, ValueError):
+        except (AttributeError,ValueError):
         pass
 
 
