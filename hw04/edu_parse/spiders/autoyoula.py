@@ -6,12 +6,13 @@ import datetime
 
 class AutoyoulaSpider(scrapy.Spider):
     name = 'autoyoula'
+    mongo_url = "mongodb://localhost:27017"
     allowed_domains = ['auto.youla.ru']
     start_urls = ['https://auto.youla.ru/']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.dbclient = pymongo.MongoClient()
+        self.dbclient = pymongo.MongoClient(self.mongo_url)
 
     @staticmethod
     def get_author_id(response):
