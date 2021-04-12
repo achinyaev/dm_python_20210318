@@ -1,0 +1,7 @@
+HH_PAGE_XPATH = {
+
+}
+
+HH_VAC_XPATH = {
+
+}
