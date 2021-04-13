@@ -5,6 +5,7 @@ HH_EMPL_XPATH = {
     "empl_sphere": "//div[@class='employer-sidebar']//div[@class='employer-sidebar-content']//p/text()"
 }
 
+
 HH_VAC_XPATH = {
     "title": "//div[@class='vacancy-title']//h1[@class='bloko-header-1'][@data-qa='vacancy-title']/text()",
     "salary": "//p[@class='vacancy-salary']/span/text()",
