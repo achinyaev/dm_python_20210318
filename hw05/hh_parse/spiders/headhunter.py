@@ -44,7 +44,7 @@ class HeadhunterSpider(scrapy.Spider):
             loader.add_xpath(key, xpath)
         yield loader.load_item()
         yield from self._get_follow_xpath(response, self._xpath_selectors["employer_url"],  self.employer_parse)
-        #self.db_client["hh_parse_20210410"][self.name].insert_one(data)
+        #self.db_client["hh_parse_20210410"][self.name].insert_one(loader._values)
 
     def employer_parse(self, response):
         loader = HeadhunterLoader(response=response)

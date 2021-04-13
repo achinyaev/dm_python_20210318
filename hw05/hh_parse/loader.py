@@ -33,7 +33,7 @@ class HeadhunterLoader(ItemLoader):
     default_item_class = dict
     url_out = TakeFirst()
     title_out = TakeFirst()
-    salary_out = flat_text
+    salary_out = salary_list
     desc_out = desc_text
     tag_out = tag_list
     # author_in = MapCompose(hh_user_url)
