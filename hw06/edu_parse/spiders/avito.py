@@ -5,7 +5,7 @@ class AvitoSpider(scrapy.Spider):
     name = 'avito'
     mongo_url = "mongodb://localhost:27017"
     allowed_domains = ['avito.ru']
-    start_urls = ['http://avito.ru/']
+    start_urls = ['https://www.avito.ru/krasnodar/kvartiry/prodam']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
