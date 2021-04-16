@@ -1,0 +1,6 @@
+AVITO_PG_XPATH = {
+
+}
+
+AVITO_KV_XPATH = {
+}
