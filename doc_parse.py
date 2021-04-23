@@ -14,6 +14,7 @@ import pytesseract
 from PIL import Image
 import re
 
+
 # PDF to Image
 
 def pdf_image_extract(pdf_path: Path, image_path: Path) -> typing.List[Path]:
